@@ -2,25 +2,29 @@
   "schemaVersion": 1,
   "id": "oldcombatmod",
   "version": "${version}",
-
   "name": "OldCombatMod",
   "description": "",
-  "authors": [],
+  "authors": [
+    "spiderfrog"
+  ],
   "contact": {},
-
   "license": "All-Rights-Reserved",
   "icon": "assets/oldcombatmod/icon.png",
-
   "environment": "*",
-  "entrypoints": {},
-
-      "mixins": [
-        "oldcombatmod.mixins.json"
-      ],
-
+  "entrypoints": {
+    "client": [
+      "com.spiderfrog.oldcombatmod.client.OldCombatModClient"
+    ],
+    "main": [
+      "com.spiderfrog.oldcombatmod.OldCombatMod"
+    ]
+  },
+  "mixins": [
+    "oldcombatmod.mixins.json"
+  ],
   "depends": {
     "fabricloader": ">=${loader_version}",
-        "fabric": "*",
+    "fabric": "*",
     "minecraft": "${minecraft_version}"
   }
 }
