@@ -50,14 +50,6 @@ public class MixinPlayerEntityRenderer extends LivingEntityRenderer<AbstractClie
             BipedEntityModel.ArmPose armPose = getArmPose(player, Hand.MAIN_HAND);
             BipedEntityModel.ArmPose armPose2 = getArmPose(player, Hand.OFF_HAND);
 
-            if(OldCombatModClient.oldCombat() && player.getOffHandStack().getItem() instanceof ShieldItem) {
-                armPose2 = BipedEntityModel.ArmPose.EMPTY;
-            }
-            if (OldCombatModClient.isPlayerSwordblocking(player)) {
-                armPose = BipedEntityModel.ArmPose.BLOCK;
-                armPose2 = BipedEntityModel.ArmPose.EMPTY;
-            }
-
             if (armPose.isTwoHanded()) {
                 armPose2 = player.getOffHandStack().isEmpty() ? BipedEntityModel.ArmPose.EMPTY : BipedEntityModel.ArmPose.ITEM;
             }
@@ -69,17 +61,16 @@ public class MixinPlayerEntityRenderer extends LivingEntityRenderer<AbstractClie
                 playerEntityModel.rightArmPose = armPose2;
                 playerEntityModel.leftArmPose = armPose;
             }
+
+            if(OldCombatModClient.oldCombat() && player.getOffHandStack().getItem() instanceof ShieldItem) {
+                playerEntityModel.leftArmPose = BipedEntityModel.ArmPose.EMPTY;
+            }
+            if(OldCombatModClient.isPlayerSwordblocking(player)) {
+                playerEntityModel.rightArmPose = BipedEntityModel.ArmPose.BLOCK;
+            }
         }
 
     }
-//    @Inject(method = "setModelPose", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/entity/model/BipedEntityModel$ArmPose;isTwoHanded()Z", ordinal = 0, shift = At.Shift.BEFORE))
-//    private void modifySetModelPose(AbstractClientPlayerEntity player, CallbackInfo ci) {
-//        BipedEntityModel.ArmPose armPose = getArmPose(player, Hand.MAIN_HAND);
-//        BipedEntityModel.ArmPose armPose2 = getArmPose(player, Hand.OFF_HAND);
-//
-//        // Überprüfe, ob der Spieler Swordblocking aktiviert hat
-//
-//    }
 
     // Füge diese Methode hinzu, um die nicht implementierten Methoden zu behandeln
     @Shadow

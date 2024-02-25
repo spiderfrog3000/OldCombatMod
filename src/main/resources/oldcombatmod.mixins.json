@@ -7,7 +7,9 @@
   ],
   "client": [
     "render.MixinHeldItemRenderer",
-    "entity.MixinPlayerEntityRenderer"
+    "entity.MixinPlayerEntityRenderer",
+    "entity.MixinBipedEntityModel",
+    "item.MixinHeldItemFeatureRenderer"
   ],
   "injectors": {
     "defaultRequire": 1
