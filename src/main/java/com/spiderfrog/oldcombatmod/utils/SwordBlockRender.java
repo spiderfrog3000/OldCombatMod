@@ -1,15 +1,11 @@
 package com.spiderfrog.oldcombatmod.utils;
 
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.Mouse;
-import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.RotationAxis;
-import org.joml.Vector3f;
 
 public class SwordBlockRender {
 
@@ -22,7 +18,7 @@ public class SwordBlockRender {
 
     public static void swordSwingWhileBlocking(LivingEntity player) {
         HitResult blockhit = MinecraftClient.getInstance().crosshairTarget;
-        if(blockhit.getType() == HitResult.Type.BLOCK && MinecraftClient.getInstance().options.attackKey.isPressed()) {
+        if(blockhit != null && blockhit.getType() == HitResult.Type.BLOCK && MinecraftClient.getInstance().options.attackKey.isPressed()) {
             player.swingHand(Hand.MAIN_HAND, false);
         }
     }

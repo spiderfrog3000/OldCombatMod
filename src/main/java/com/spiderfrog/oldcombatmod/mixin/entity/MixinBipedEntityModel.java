@@ -9,7 +9,6 @@ import net.minecraft.client.render.entity.model.ModelWithHead;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.Arm;
-import net.minecraft.util.math.MathHelper;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -20,13 +19,11 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class MixinBipedEntityModel<T extends LivingEntity> extends AnimalModel<T> implements ModelWithArms, ModelWithHead {
 
     @Shadow
-    public final ModelPart head;
+    public ModelPart head;
     @Shadow
-    public final ModelPart leftArm;
+    public ModelPart leftArm;
     @Shadow
-    public final ModelPart rightArm;
-    @Shadow
-    public BipedEntityModel.ArmPose rightArmPose;
+    public ModelPart rightArm;
 
     public MixinBipedEntityModel(ModelPart head, ModelPart leftArm, ModelPart rightArm) {
         this.head = head;
@@ -34,16 +31,15 @@ public class MixinBipedEntityModel<T extends LivingEntity> extends AnimalModel<T
         this.rightArm = rightArm;
     }
 
-    @Inject(method = "animateArms", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "animateArms", at = @At("HEAD"))
     protected void animateArms(T entity, float animationProgress, CallbackInfo ci) {
         if(OldCombatModClient.isPlayerSwordblocking(entity)) {
-            this.positionSwordBlocking(this.rightArm, true);
+            this.positionSwordBlocking(this.rightArm);
         }
     }
 
-    private void positionSwordBlocking(ModelPart arm, boolean rightArm) {
+    private void positionSwordBlocking(ModelPart arm) {
         arm.pitch = arm.pitch * 0.5F - 0.9424779F;
-        //arm.yaw = (rightArm ? -30.0F : 30.0F) * 0.017453292F + MathHelper.clamp(this.head.yaw, -0.5235988F, 0.5235988F);
     }
 
     @Shadow
