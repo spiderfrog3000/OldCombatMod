@@ -27,7 +27,14 @@ public class SwordBlockRender {
         }
     }
 
-    public static void translateSwordRender(float x, float y, float z) {
+    public static void transformThirdPersonSwordBlocking(MatrixStack matrices, LivingEntity entity) {
+        matrices.translate(-0.22f, -0.07f, 0.10f);
+        matrices.multiply(RotationAxis.POSITIVE_X.rotationDegrees(25));
+        matrices.multiply(RotationAxis.POSITIVE_Z.rotationDegrees(30));
+        matrices.multiply(RotationAxis.POSITIVE_X.rotationDegrees(0));
+        matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(70));
+        if(entity.isInSneakingPose()) {
+        }
 
     }
 }

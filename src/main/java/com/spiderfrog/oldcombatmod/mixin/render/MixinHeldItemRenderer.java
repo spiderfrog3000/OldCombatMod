@@ -50,13 +50,9 @@ public class MixinHeldItemRenderer {
         ClientPlayerEntity clientPlayerEntity = this.client.player;
         ItemStack itemStack = clientPlayerEntity.getMainHandStack();
 
-        // Überprüfe, ob itemStack eine Instanz von SwordItem ist
         if (itemStack.getItem() instanceof SwordItem) {
-            // Setze float f auf 1.0f
             return 1.0f;
         }
-
-        // Andernfalls belasse den ursprünglichen Wert
         return original;
     }
 
