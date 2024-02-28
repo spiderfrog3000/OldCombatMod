@@ -3,12 +3,12 @@
   "id": "oldcombatmod",
   "version": "${version}",
   "name": "OldCombatMod",
-  "description": "",
+  "description": "Get back the 1.7 styled Combat for newer Versions of Minecraft.",
   "authors": [
     "spiderfrog"
   ],
   "contact": {},
-  "license": "All-Rights-Reserved",
+  "license": "MIT License",
   "icon": "assets/oldcombatmod/icon.png",
   "environment": "*",
   "entrypoints": {
