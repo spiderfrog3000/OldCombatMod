@@ -7,7 +7,11 @@
   "authors": [
     "spiderfrog"
   ],
-  "contact": {},
+  "contact": {
+    "issues": "https://github.com/spiderfrog3000/OldCombatMod/issues",
+    "sources" : "https://github.com/spiderfrog3000/OldCombatMod",
+    "homepage" : "https://modrinth.com/mod/oldcombatmod"
+  },
   "license": "MIT License",
   "icon": "assets/oldcombatmod/icon.png",
   "environment": "*",
@@ -26,5 +30,13 @@
     "fabricloader": ">=${loader_version}",
     "fabric": "*",
     "minecraft": "${minecraft_version}"
+  },
+  "custom": {
+    "modmenu": {
+      "links": {
+        "modmenu.discord": "https://discord.gg/sPtbqjspyT"
+      },
+      "update_checker": true
+    }
   }
 }
