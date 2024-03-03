@@ -18,9 +18,9 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(PlayerEntityRenderer.class)
-public class MixinPlayerEntityRenderer extends LivingEntityRenderer {
+public class MixinPlayerEntityRenderer extends LivingEntityRenderer<AbstractClientPlayerEntity, PlayerEntityModel<AbstractClientPlayerEntity>> {
 
-    public MixinPlayerEntityRenderer(EntityRendererFactory.Context ctx, EntityModel model, float shadowRadius) {
+    public MixinPlayerEntityRenderer(EntityRendererFactory.Context ctx, PlayerEntityModel<AbstractClientPlayerEntity> model, float shadowRadius) {
         super(ctx, model, shadowRadius);
     }
 
@@ -33,7 +33,7 @@ public class MixinPlayerEntityRenderer extends LivingEntityRenderer {
     }
 
     @Shadow
-    public Identifier getTexture(Entity entity) {
+    public Identifier getTexture(AbstractClientPlayerEntity entity) {
         return null;
     }
 }
