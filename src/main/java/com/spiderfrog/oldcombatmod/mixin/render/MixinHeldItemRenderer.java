@@ -36,7 +36,7 @@ public class MixinHeldItemRenderer {
             if(!leftHanded && stack != null && stack.getItem() instanceof SwordItem && OldCombatModClient.isPlayerSwordblocking(entity) && entity.isUsingItem() && entity.getOffHandStack().getUseAction() == UseAction.BLOCK && renderMode == ModelTransformationMode.FIRST_PERSON_RIGHT_HAND) {
                 SwordBlockRender.swordBlockingFirstPerson(matrices);
             }
-            SwordBlockRender.swordSwingWhileBlocking(entity);
+            SwordBlockRender.swordSwingWhileBlocking();
         }
     }
 
@@ -45,14 +45,12 @@ public class MixinHeldItemRenderer {
         ClientPlayerEntity clientPlayerEntity = this.client.player;
         ItemStack itemStack = clientPlayerEntity.getMainHandStack();
 
-        if (itemStack.getItem() instanceof SwordItem) {
+        if (OldCombatModClient.oldCombat() && itemStack.getItem() instanceof SwordItem) {
             return 1.0f;
         }
         return original;
     }
 
-
-    private boolean lastTranslateEncountered = false;
     @Redirect(at = @At(value = "INVOKE", target = "Lnet/minecraft/client/util/math/MatrixStack;translate(FFF)V"), method = "renderFirstPersonItem")
     private void fixFirstPersonBlocking(MatrixStack instance, float x, float y, float z) {
         if(OldCombatModClient.isPlayerSwordblocking(client.player)) {
