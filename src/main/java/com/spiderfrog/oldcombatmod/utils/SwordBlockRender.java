@@ -1,15 +1,21 @@
 package com.spiderfrog.oldcombatmod.utils;
 
+import com.spiderfrog.oldcombatmod.OldCombatMod;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.item.MilkBucketItem;
 import net.minecraft.item.ShieldItem;
 import net.minecraft.item.SwordItem;
+import net.minecraft.network.packet.s2c.play.EntityAnimationS2CPacket;
+import net.minecraft.server.world.ServerChunkManager;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.RotationAxis;
 
 public class SwordBlockRender {
+    public static MinecraftClient minecraft = MinecraftClient.getInstance();
 
     public static void swordBlockingFirstPerson(MatrixStack matrices) {
         matrices.translate(-0.15f, 0.16f, 0.15f);
@@ -19,7 +25,6 @@ public class SwordBlockRender {
     }
 
     public static void swordSwingWhileBlocking() {
-        MinecraftClient minecraft = MinecraftClient.getInstance();
         LivingEntity player = minecraft.player;
         HitResult blockhit = minecraft.crosshairTarget;
         if(blockhit != null && blockhit.getType() == HitResult.Type.BLOCK && minecraft.options.attackKey.isPressed() && minecraft.options.useKey.isPressed()) {
@@ -39,5 +44,17 @@ public class SwordBlockRender {
         if(entity.isInSneakingPose()) {
         }
 
+    }
+
+    public static boolean swingWhileEating() {
+        LivingEntity player = minecraft.player;
+        HitResult blockhit = minecraft.crosshairTarget;
+        if(blockhit != null && blockhit.getType() == HitResult.Type.BLOCK && minecraft.options.attackKey.isPressed() && minecraft.options.useKey.isPressed()) {
+            assert player != null;
+            if ((player.getMainHandStack().getItem() instanceof MilkBucketItem) && player.getOffHandStack().getItem() instanceof ShieldItem) {
+                return true;
+            }
+        }
+        return false;
     }
 }

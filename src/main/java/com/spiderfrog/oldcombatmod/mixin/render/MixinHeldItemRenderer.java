@@ -12,6 +12,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ShieldItem;
 import net.minecraft.item.SwordItem;
+import net.minecraft.util.Arm;
 import net.minecraft.util.UseAction;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -23,9 +24,11 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.Cancellable;
 
 @Mixin(HeldItemRenderer.class)
-public class MixinHeldItemRenderer {
+public abstract class MixinHeldItemRenderer {
     @Shadow
     private MinecraftClient client;
+
+    @Shadow protected abstract void applySwingOffset(MatrixStack matrices, Arm arm, float swingProgress);
 
     @Inject(method = "renderItem", at = @At("HEAD"), cancellable = true)
     public void renderItemReplacement(LivingEntity entity, ItemStack stack, ModelTransformationMode renderMode, boolean leftHanded, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, CallbackInfo ci) {
@@ -57,6 +60,12 @@ public class MixinHeldItemRenderer {
 
         } else {
             instance.translate(x, y, z);
+        }
+    }
+    @Inject(at = @At(value = "TAIL"), method = "applyEatOrDrinkTransformation")
+    private void applyEatOrDrinkTransformation(MatrixStack matrices, float tickDelta, Arm arm, ItemStack stack, CallbackInfo ci) {
+        if(SwordBlockRender.swingWhileEating()) {
+            this.applySwingOffset(matrices, arm, 1);
         }
     }
 }

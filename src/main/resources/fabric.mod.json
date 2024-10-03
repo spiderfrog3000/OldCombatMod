@@ -14,13 +14,15 @@
   },
   "license": "MIT License",
   "icon": "assets/oldcombatmod/icon.png",
-  "environment": "*",
+  "environment": "client",
   "entrypoints": {
     "client": [
       "com.spiderfrog.oldcombatmod.client.OldCombatModClient"
     ],
     "main": [
       "com.spiderfrog.oldcombatmod.OldCombatMod"
+    ],
+    "modmenu": [ "com.spiderfrog.oldcombatmod.utils.OldCombatModMenuApiImpl"
     ]
   },
   "mixins": [
@@ -29,7 +31,8 @@
   "depends": {
     "fabricloader": ">=${loader_version}",
     "fabric": "*",
-    "minecraft": "${minecraft_version}"
+    "minecraft": "${minecraft_version}",
+    "modmenu": "*"
   },
   "custom": {
     "modmenu": {

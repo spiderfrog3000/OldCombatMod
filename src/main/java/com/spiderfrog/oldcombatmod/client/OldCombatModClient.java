@@ -12,13 +12,14 @@ import net.minecraft.util.UseAction;
 
 public class OldCombatModClient implements ClientModInitializer {
 
+    private static boolean oldCombat = true;
 
     @Override
     public void onInitializeClient() {
     }
 
     public static boolean oldCombat() {
-        return true;
+        return oldCombat;
     }
     public static boolean oldEatSwing() {
         return true;
@@ -31,5 +32,9 @@ public class OldCombatModClient implements ClientModInitializer {
             return true;
         }
         return false;
+    }
+
+    public static void switchOldCombat() {
+        oldCombat = !oldCombat;
     }
 }
