@@ -3,6 +3,7 @@ package com.spiderfrog.oldcombatmod.mixin.render;
 import com.spiderfrog.oldcombatmod.client.OldCombatModClient;
 import com.spiderfrog.oldcombatmod.utils.SwordBlockRender;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.item.HeldItemRenderer;
@@ -13,6 +14,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.ShieldItem;
 import net.minecraft.item.SwordItem;
 import net.minecraft.util.Arm;
+import net.minecraft.util.Hand;
 import net.minecraft.util.UseAction;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -22,6 +24,8 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.Cancellable;
+
+import java.util.Set;
 
 @Mixin(HeldItemRenderer.class)
 public abstract class MixinHeldItemRenderer {
@@ -41,6 +45,9 @@ public abstract class MixinHeldItemRenderer {
             }
             SwordBlockRender.swordSwingWhileBlocking();
         }
+        if(!stack.isEmpty()) {
+            SwordBlockRender.swingWhileEating();
+        }
     }
 
     @ModifyVariable(method = "updateHeldItems()V", at = @At(value = "STORE", ordinal = 0), ordinal = 0)
@@ -49,6 +56,9 @@ public abstract class MixinHeldItemRenderer {
         ItemStack itemStack = clientPlayerEntity.getMainHandStack();
 
         if (OldCombatModClient.oldCombat() && itemStack.getItem() instanceof SwordItem) {
+            return 1.0f;
+        }
+        if(OldCombatModClient.oldEat() && (Set.of(UseAction.EAT, UseAction.DRINK).contains(itemStack.getUseAction()))) {
             return 1.0f;
         }
         return original;
@@ -62,10 +72,11 @@ public abstract class MixinHeldItemRenderer {
             instance.translate(x, y, z);
         }
     }
-    @Inject(at = @At(value = "TAIL"), method = "applyEatOrDrinkTransformation")
-    private void applyEatOrDrinkTransformation(MatrixStack matrices, float tickDelta, Arm arm, ItemStack stack, CallbackInfo ci) {
-        if(SwordBlockRender.swingWhileEating()) {
-            this.applySwingOffset(matrices, arm, 1);
+
+    @Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/item/HeldItemRenderer;applyEquipOffset(Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/util/Arm;F)V", ordinal = 3, shift = At.Shift.AFTER), method = "renderFirstPersonItem")
+    private void renderFirstPersonItem(AbstractClientPlayerEntity player, float tickDelta, float pitch, Hand hand, float swingProgress, ItemStack item, float equipProgress, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, CallbackInfo ci) {
+        if(OldCombatModClient.oldEat()) {
+            this.applySwingOffset(matrices, player.getMainArm(), swingProgress);
         }
     }
 }

@@ -18,23 +18,30 @@ public class ConfigScreen extends Screen {
     }
 
 
-    public ButtonWidget button1;
-    public ButtonWidget button2;
+    public ButtonWidget sword;
+    public ButtonWidget eatDrink;
+
+    public ButtonWidget back;
 
     @Override
     protected void init() {
-        button1 = ButtonWidget.builder(Text.literal("1.7 Sword Blockhit: " + (OldCombatModClient.oldCombat() ? "Enabled" : "Disabled")), button -> {OldCombatModClient.switchOldCombat();})
-                .dimensions(width / 2 - 100, height / 2 - 15, 200, 20)
+        sword = ButtonWidget.builder(Text.literal("1.7 Sword Blockhit: " + (OldCombatModClient.oldCombat() ? "Enabled" : "Disabled")), button -> {OldCombatModClient.switchOldCombat();})
+                .dimensions(width / 2 - 100, height / 2 - 25, 200, 20)
                 .tooltip(Tooltip.of(Text.literal("Enable or disable the 1.7 Sword blocking")))
                 .build();
-        button2 = ButtonWidget.builder(Text.literal("Back"), button -> {
+        eatDrink = ButtonWidget.builder(Text.literal("1.7 Eat & Drink: " + (OldCombatModClient.oldEat() ? "Enabled" : "Disabled")), button -> {OldCombatModClient.switchOldEat();})
+                .dimensions(width / 2 - 100, height / 2, 200, 20)
+                .tooltip(Tooltip.of(Text.literal("Enable or disable the 1.7 Eating and drinking animation")))
+                .build();
+        back = ButtonWidget.builder(Text.literal("Back"), button -> {
                     this.client.setScreen(this.parent);
                 })
-                .dimensions(width / 2 - 100, height / 2 + 10, 200, 20)
+                .dimensions(width / 2 - 100, height / 2 + 25, 200, 20)
                 .build();
 
-        addDrawableChild(button1);
-        addDrawableChild(button2);
+        addDrawableChild(sword);
+        addDrawableChild(eatDrink);
+        addDrawableChild(back);
     }
 
     @Override
@@ -44,9 +51,11 @@ public class ConfigScreen extends Screen {
         String headline = "OldCombatMod Settings";
         context.drawCenteredTextWithShadow(this.textRenderer, headline, width / 2, 20, -1);
 
-        this.button1.render(context, mouseX, mouseY, delta);
-        this.button1.setMessage(Text.literal("1.7 Sword Blockhit: " + (OldCombatModClient.oldCombat() ? "Enabled" : "Disabled")));
-        this.button2.render(context, mouseX, mouseY, delta);
+        this.sword.render(context, mouseX, mouseY, delta);
+        this.sword.setMessage(Text.literal("1.7 Sword Blockhit: " + (OldCombatModClient.oldCombat() ? "Enabled" : "Disabled")));
+        this.eatDrink.render(context, mouseX, mouseY, delta);
+        this.eatDrink.setMessage(Text.literal("1.7 Eat & Drink: " + (OldCombatModClient.oldEat() ? "Enabled" : "Disabled")));
+        this.back.render(context, mouseX, mouseY, delta);
     }
 
     @Override

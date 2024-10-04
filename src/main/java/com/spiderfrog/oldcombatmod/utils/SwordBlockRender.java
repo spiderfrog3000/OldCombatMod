@@ -1,6 +1,7 @@
 package com.spiderfrog.oldcombatmod.utils;
 
 import com.spiderfrog.oldcombatmod.OldCombatMod;
+import com.spiderfrog.oldcombatmod.client.OldCombatModClient;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.LivingEntity;
@@ -46,15 +47,11 @@ public class SwordBlockRender {
 
     }
 
-    public static boolean swingWhileEating() {
+    public static void swingWhileEating() {
         LivingEntity player = minecraft.player;
         HitResult blockhit = minecraft.crosshairTarget;
-        if(blockhit != null && blockhit.getType() == HitResult.Type.BLOCK && minecraft.options.attackKey.isPressed() && minecraft.options.useKey.isPressed()) {
-            assert player != null;
-            if ((player.getMainHandStack().getItem() instanceof MilkBucketItem) && player.getOffHandStack().getItem() instanceof ShieldItem) {
-                return true;
-            }
+        if(OldCombatModClient.isPlayerEatingAndBlocking(player) && blockhit != null && blockhit.getType() == HitResult.Type.BLOCK) {
+            player.swingHand(Hand.MAIN_HAND, false);
         }
-        return false;
     }
 }
